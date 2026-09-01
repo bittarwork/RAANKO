@@ -341,3 +341,38 @@ Consequences:
 - Branch Manager queries always inject branch scope server-side.
 - Quote and shipment screens show buy rates to Sales and Operations by default unless role is customized.
 
+---
+
+## ADR-015: Implementation tooling and Beta vendor selections
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+ADR-008 and ADR-013 fixed capability classes but left some library and vendor choices open. Slice 1 scaffold requires final selections for monorepo tooling, UI stack, validation, and Beta providers.
+
+Decision:
+
+| Area | Selection |
+|---|---|
+| Monorepo | pnpm workspaces |
+| UI | shadcn/ui + Tailwind CSS |
+| i18n | next-intl |
+| Shared validation | Zod in `packages/shared` |
+| Beta hosting | Railway |
+| Transactional email | Resend |
+| Object storage | Cloudflare R2 |
+| PDF generation | Puppeteer (HTML to PDF) |
+| Excel import | ExcelJS |
+| Password hashing | Argon2id |
+| 2FA library | otplib (TOTP) |
+
+API host for Beta: `api.raanko.com`. Super Admin host: `admin.raanko.com`. Tenant surfaces: `{slug}.raanko.com`.
+
+Consequences:
+- Repository bootstrap uses pnpm workspaces with `apps/api`, `apps/web`, and `packages/shared`.
+- Frontend and backend share Zod schemas and TypeScript types from `packages/shared`.
+- CI/CD targets Railway for API, web, PostgreSQL, and Redis in Beta.
+- shadcn/ui and next-intl are added during web app setup in Slice 1–2.
+

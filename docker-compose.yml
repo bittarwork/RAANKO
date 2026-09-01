@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: raanko-postgres
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: raanko
+      POSTGRES_PASSWORD: raanko_dev
+      POSTGRES_DB: raanko_dev
+    volumes:
+      - raanko_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U raanko -d raanko_dev']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: raanko-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - raanko_redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  raanko_postgres_data:
+  raanko_redis_data:
