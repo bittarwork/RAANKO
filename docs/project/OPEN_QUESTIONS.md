@@ -153,14 +153,13 @@ Impact:
 Login, tenant resolution, and UX.
 
 Status:
-Open
+Answered
+
+Answer:
+MVP UI exposes one active tenant per session with no tenant switcher. Users with multiple memberships must log in via the correct company subdomain. Data model supports multiple memberships for Phase 2 switcher. See ADR-014 and `AUTHENTICATION_DESIGN.md`.
 
 Must Be Answered Before:
-Authentication UX design
-
-Confirmed so far:
-- Data model must not block multi-membership
-- MVP exposes one active tenant per session
+Authentication UX design — answered
 
 ---
 

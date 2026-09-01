@@ -1,6 +1,6 @@
 # Security Architecture
 
-Status: Confirmed principles. Control implementation depends on later stack decisions.
+Status: Confirmed principles. Auth implementation detail in `AUTHENTICATION_DESIGN.md`.
 
 ---
 
@@ -78,10 +78,17 @@ Tenant isolation tests are mandatory.
 
 ---
 
+## Auth Implementation (MVP)
+
+See `AUTHENTICATION_DESIGN.md`.
+
+- Built-in application auth with JWT access tokens and rotating refresh tokens (ADR-008)
+- Separate auth surfaces: platform, company, portal
+- Argon2id or bcrypt password hashing
+- TOTP 2FA infrastructure in MVP; Super Admin enforcement recommended before production Beta
+
 ## Not Decided
 
-- Auth provider
-- Token implementation
-- WAF / edge controls
+- WAF / edge controls beyond Cloudflare defaults
 - Encryption-at-rest provider details
-- Key management
+- Key management service selection

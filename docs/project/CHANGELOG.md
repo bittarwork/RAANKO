@@ -28,3 +28,14 @@ This file records what actually changed, not future plans.
 - Updated `SYSTEM_ARCHITECTURE.md`, `MULTI_TENANCY.md`, and `DATABASE_DESIGN.md` with platform foundation design.
 - Answered open questions OQ-001, OQ-002, OQ-003, OQ-004, OQ-006, OQ-007, OQ-009, and OQ-011.
 - Promoted architecture assumptions ASM-001, ASM-002, and ASM-003 into accepted ADRs.
+
+### Changed (continued)
+
+- Added `AUTHENTICATION_DESIGN.md` with session/token strategy, auth surfaces, login flows, and authorization pipeline.
+- Expanded `PERMISSIONS_MODEL.md` with full MVP permission catalog and default role matrix.
+- Updated `SECURITY_ARCHITECTURE.md` to reference built-in auth design.
+- Added `API_CONTRACT_PRINCIPLES.md`, `CORE_WORKFLOWS.md`, and `UX_FLOWS.md`.
+- Accepted ADR-014 for MVP auth UX and default permission policy.
+- Answered OQ-008 (one tenant per session, no switcher in MVP).
+- Updated `SYSTEM_ARCHITECTURE.md` and `CURRENT_STATE.md` — platform foundation design complete.
+- Created `TASK-0002-implementation-planning.md` with 14 vertical slices for MVP delivery.

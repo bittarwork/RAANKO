@@ -316,3 +316,28 @@ Exact vendor choice may vary by availability and price at implementation time, b
 Consequences:
 - Infrastructure setup can begin once implementation is approved.
 - Production hardening and cost review are required before broad commercial launch.
+
+---
+
+## ADR-014: MVP auth UX and default permission policy
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+Platform foundation design required final decisions on tenant switching UX, Super Admin 2FA, branch scope, and default visibility of buy prices for operational roles.
+
+Decision:
+
+1. MVP exposes one active tenant per session with no tenant switcher UI. Multi-membership remains in the data model.
+2. Super Admin must enable and pass 2FA before production Beta launch. Company and portal 2FA is optional in MVP.
+3. Branch Manager permissions are branch-scoped only, filtered by assigned branch.
+4. Sales and Shipping Operations default roles include `finance.buy_prices.view` in the seeded permission matrix.
+
+Consequences:
+- Login UX is subdomain-specific per company in MVP.
+- Platform admin accounts require TOTP setup before Beta production.
+- Branch Manager queries always inject branch scope server-side.
+- Quote and shipment screens show buy rates to Sales and Operations by default unless role is customized.
+

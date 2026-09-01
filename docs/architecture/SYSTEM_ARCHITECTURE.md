@@ -1,6 +1,6 @@
 # System Architecture
 
-Status: Design accepted pending owner review of the Design gate.
+Status: Design accepted pending Implementation Planning.
 
 Implementation must not start until the Design gate is explicitly approved.
 
@@ -183,6 +183,8 @@ Response rules:
 - Server-side filtering and sorting
 - Stable error format with authorization-safe messages
 
+Full contract: `API_CONTRACT_PRINCIPLES.md`
+
 ---
 
 ## Background Jobs
@@ -244,11 +246,21 @@ Mandatory test categories:
 
 ---
 
-## Explicitly Not Part of Current Design Gate
+## Design Documents
 
-- Final DDL and index plan
-- Full permission matrix tables
-- Detailed UX wireframes
-- Implementation task breakdown
+| Document | Content |
+|---|---|
+| `AUTHENTICATION_DESIGN.md` | Auth surfaces, tokens, authorization pipeline |
+| `PERMISSIONS_MODEL.md` | Permission keys and default role matrix |
+| `API_CONTRACT_PRINCIPLES.md` | REST conventions, envelopes, error codes |
+| `CORE_WORKFLOWS.md` | Sequence diagrams for primary flows |
+| `UX_FLOWS.md` | Screen flows and navigation |
+| `MULTI_TENANCY.md` | Tenant resolution and lifecycle |
+| `DATABASE_DESIGN.md` | Logical entity model |
+| `SECURITY_ARCHITECTURE.md` | Threat model and controls |
 
-These are the next Design outputs before Implementation Planning approval.
+---
+
+## Next Step After Design Gate
+
+Implementation Planning by vertical slice. Physical DDL remains blocked until schema detail task is approved.

@@ -2,19 +2,19 @@
 
 ## Current Phase
 
-Product: System analysis complete. Platform foundation design in progress.
+Product: Platform foundation design complete. Ready for Design gate approval and Implementation Planning.
 
 Task workflow: TASK-0001 is in Review. Discovery analysis Rounds 1–23 are complete and approved by the owner.
 
 ## Current Milestone
 
-Platform Foundation Design — ADR Stack, multi-tenancy, and module boundaries
+Platform Foundation Design — complete pending formal Design gate sign-off
 
 ## Active Modules
 
 None implemented.
 
-Architecture design documents are being filled during the Design phase. Module specification folders will be created when a module enters Implementation.
+Architecture design documents are complete for the foundation gate. Module specification folders will be created when a module enters Implementation.
 
 ## Completed Work
 
@@ -27,13 +27,18 @@ Architecture design documents are being filled during the Design phase. Module s
 - Initial requirements, open questions, assumptions, decisions, and changelog
 - Architecture principle documents
 - Discovery analysis Rounds 1–23 completed
-- Accepted ADRs for stack, physical multi-tenancy, module boundaries, lifecycle, identifiers, and Beta infrastructure
+- Accepted ADRs for stack, physical multi-tenancy, module boundaries, lifecycle, identifiers, Beta infrastructure, and MVP auth/permission policy (ADR-014)
 - Updated system architecture, multi-tenancy, and database logical design documents
+- Authentication and authorization design (`AUTHENTICATION_DESIGN.md`)
+- MVP permission catalog and default role matrix (`PERMISSIONS_MODEL.md`)
+- API contract principles (`API_CONTRACT_PRINCIPLES.md`)
+- Core workflow sequence diagrams (`CORE_WORKFLOWS.md`)
+- UX flows for all primary surfaces (`UX_FLOWS.md`)
 
 ## Work In Progress
 
-- Platform foundation design gate review
-- Remaining Design outputs: permission matrix, auth design detail, API contract principles, UX flows
+- TASK-0002 Implementation Planning (Design phase — vertical slices defined)
+- Slice 1 scaffold ready to enter Implementation upon gate approval
 
 ## Blocked Work
 
@@ -43,13 +48,14 @@ Architecture design documents are being filled during the Design phase. Module s
 
 ## Next Recommended Task
 
-Complete remaining Design outputs, then obtain owner approval for the Design gate before Implementation Planning.
+1. Approve TASK-0002 vertical slice plan
+2. Begin Slice 1 Implementation: repository scaffold and dev environment
+3. Physical schema design per slice starting with Platform Identity (Slice 2)
 
-Suggested next design work:
-1. Authentication and authorization design detail
-2. MVP permission matrix
-3. Core workflow sequence diagrams
-4. Implementation planning by vertical slice
+## Active Tasks
+
+- `tasks/active/TASK-0001-project-foundation.md` — Review
+- `tasks/active/TASK-0002-implementation-planning.md` — Design
 
 ## Open Decisions
 
@@ -57,7 +63,6 @@ See `docs/project/OPEN_QUESTIONS.md`.
 
 Highest impact remaining:
 - OQ-005 commercial plan names and prices
-- OQ-008 multi-tenant membership switching in MVP UI
 - OQ-010 legal retention period
 - OQ-012 Beta recruitment approach
 - OQ-013 MENA legal and privacy requirements
