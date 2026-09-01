@@ -17,7 +17,10 @@ Impact:
 Implementation, coding standards, and project structure cannot be finalized.
 
 Status:
-Open
+Answered
+
+Answer:
+TypeScript with NestJS. See ADR-008.
 
 Must Be Answered Before:
 Implementation of any application module
@@ -33,7 +36,10 @@ Impact:
 UI architecture, i18n approach, and frontend coding standards.
 
 Status:
-Open
+Answered
+
+Answer:
+TypeScript with Next.js and React in one frontend application. See ADR-008.
 
 Must Be Answered Before:
 Frontend implementation
@@ -49,7 +55,10 @@ Impact:
 Database design, isolation mechanism, migrations, and possible RLS.
 
 Status:
-Open
+Answered
+
+Answer:
+PostgreSQL with one shared schema and explicit `tenant_id` on tenant-scoped tables. See ADR-009.
 
 Must Be Answered Before:
 Physical database implementation
@@ -65,10 +74,16 @@ Impact:
 File security, notifications, deployment, and operational cost.
 
 Status:
-Open
+Answered
+
+Answer:
+Managed PaaS hosting, PostgreSQL, Redis, S3-compatible storage, transactional email provider, Cloudflare DNS/edge, and built-in application auth. See ADR-008 and ADR-013.
 
 Must Be Answered Before:
 Infrastructure implementation
+
+Notes:
+Exact vendor within each capability class may be chosen at implementation time.
 
 ---
 
@@ -87,7 +102,7 @@ Must Be Answered Before:
 Public commercial launch configuration
 
 Notes:
-Do not assume prices. Example names Starter / Professional / Business / Enterprise are not final.
+Do not assume prices. Beta uses `Trial` and `Paid` plan placeholders without public pricing.
 
 ---
 
@@ -100,15 +115,13 @@ Impact:
 Customer communication and operational continuity.
 
 Status:
-Open
+Answered
+
+Answer:
+Company login and API are blocked. Customer portal is read-only. Public tracking remains active. See ADR-011.
 
 Must Be Answered Before:
 Suspension behavior implementation
-
-Confirmed so far:
-- Company login blocked
-- API access blocked
-- Data preserved
 
 ---
 
@@ -121,7 +134,10 @@ Impact:
 Provisioning workflow and onboarding.
 
 Status:
-Open
+Answered
+
+Answer:
+Always create a default `Main Branch` during provisioning. See ADR-010 and provisioning design in `MULTI_TENANCY.md`.
 
 Must Be Answered Before:
 Tenant provisioning implementation
@@ -144,6 +160,7 @@ Authentication UX design
 
 Confirmed so far:
 - Data model must not block multi-membership
+- MVP exposes one active tenant per session
 
 ---
 
@@ -156,13 +173,13 @@ Impact:
 Onboarding, abuse control, and billing.
 
 Status:
-Open
+Answered
+
+Answer:
+Super Admin is the only provisioning path in Beta/MVP.
 
 Must Be Answered Before:
 Company onboarding implementation
-
-Confirmed so far:
-- Super Admin can create companies
 
 ---
 
@@ -191,10 +208,42 @@ Impact:
 Database schema and URL design.
 
 Status:
-Open
+Answered
+
+Answer:
+ULID for primary identifiers where string IDs are used. See ADR-012.
 
 Must Be Answered Before:
 Physical database implementation
 
-Notes:
-Secure non-guessable identifiers are recommended.
+---
+
+## OQ-012
+
+Question:
+How will the first 3–5 Beta shipping companies be recruited?
+
+Impact:
+Beta validation and onboarding support model.
+
+Status:
+Open
+
+Must Be Answered Before:
+Beta launch planning
+
+---
+
+## OQ-013
+
+Question:
+Which MENA legal and privacy requirements apply per target country?
+
+Impact:
+Compliance claims, retention, and privacy operations.
+
+Status:
+Open
+
+Must Be Answered Before:
+Public commercial launch and permanent deletion implementation

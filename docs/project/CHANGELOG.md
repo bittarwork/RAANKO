@@ -22,3 +22,9 @@ This file records what actually changed, not future plans.
 ### Changed
 
 - Standardized tenant ownership terminology to `tenant_id`.
+- Completed Discovery analysis Rounds 1–23 with owner approval to enter Design.
+- Accepted ADR-008 through ADR-013 for stack, physical multi-tenancy, module boundaries, lifecycle behavior, identifiers, and Beta infrastructure.
+- Superseded ADR-007 now that the technology stack is selected.
+- Updated `SYSTEM_ARCHITECTURE.md`, `MULTI_TENANCY.md`, and `DATABASE_DESIGN.md` with platform foundation design.
+- Answered open questions OQ-001, OQ-002, OQ-003, OQ-004, OQ-006, OQ-007, OQ-009, and OQ-011.
+- Promoted architecture assumptions ASM-001, ASM-002, and ASM-003 into accepted ADRs.

@@ -121,7 +121,7 @@ Consequences:
 
 ## ADR-007: Technology stack is not selected yet
 
-Status: Accepted
+Status: Superseded by ADR-008, ADR-009, ADR-010, ADR-012, ADR-013
 
 Date: 2026-09-01
 
@@ -134,3 +134,185 @@ Do not treat any technology as selected. Recommendations may be recorded as assu
 Consequences:
 - Coding standards remain technology-agnostic.
 - Architecture documents may capture principles, not physical schemas or stack-specific implementations.
+
+---
+
+## ADR-008: Application technology stack
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+System analysis is complete. The team is small, the Beta budget for infrastructure is low, and the product requires a multi-tenant SaaS with dashboards, customer portal, public tracking, background jobs, and strong type safety across a complex domain.
+
+Decision:
+Use the following stack for RAANKO MVP implementation:
+
+- Architecture shape: modular monolith
+- Backend: TypeScript, NestJS
+- Frontend: TypeScript, Next.js (App Router), React
+- Database: PostgreSQL
+- ORM and migrations: Prisma
+- Queue and cache: Redis with BullMQ
+- File storage: S3-compatible object storage (Cloudflare R2 recommended for Beta)
+- Transactional email: Resend or equivalent provider
+- Authentication: built-in application auth with secure sessions or access/refresh tokens
+- Hosting: managed PaaS for Beta (Railway, Render, or Fly.io)
+- DNS and edge: Cloudflare in front of the existing company domain
+- CI/CD: GitHub Actions
+- Automated tests: Vitest for unit/integration, Playwright for critical E2E flows
+
+Alternatives considered:
+- Python/FastAPI + React: stronger for analytics, weaker for a single-language full-stack team using AI agents heavily
+- Laravel/Inertia: viable, but not selected because the approved direction favors TypeScript end to end
+- Microservices: rejected for Beta due to operational cost and tightly connected workflows
+
+Consequences:
+- Coding standards and repository structure can now be finalized for TypeScript.
+- One language across backend and frontend reduces context switching for a two-person team.
+- Next.js can serve company dashboard, portal, public tracking, and Super Admin surfaces with shared UI primitives.
+- NestJS modules align with RAANKO business modules and support guards/interceptors for tenant and permission enforcement.
+- Background work must use queue workers, not HTTP request threads.
+
+---
+
+## ADR-009: Physical multi-tenant database strategy
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+RAANKO requires strict tenant isolation, relational financial data, reporting, and a small-team operational model. ADR-001 already selected `tenant_id` as the logical ownership boundary.
+
+Decision:
+Use one shared PostgreSQL database and one shared application schema.
+
+- All TENANT_SCOPED tables include `tenant_id`
+- GLOBAL and platform tables do not include `tenant_id`
+- Tenant ownership is enforced in application services and repositories using trusted server-side tenant context
+- PostgreSQL Row Level Security is recommended as defense in depth once core queries are stable
+- Schema-per-tenant and database-per-tenant are deferred unless an exceptional enterprise requirement appears later
+
+Consequences:
+- Migrations remain simple for Beta.
+- Cross-tenant reporting for Super Admin must use explicit platform queries with separate authorization.
+- Automated tenant isolation tests become mandatory before release.
+- Future enterprise isolation would require a new ADR.
+
+---
+
+## ADR-010: Modular monolith module boundaries
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+RAANKO spans CRM, operations, finance, documents, portal, platform administration, and support. The workflows are tightly connected, but future modules such as warehouse and fleet must not be blocked.
+
+Decision:
+Implement RAANKO as one deployable application composed of bounded modules with explicit internal contracts.
+
+Initial modules:
+
+1. Platform Identity — users, memberships, auth, sessions, login activity
+2. Platform Administration — Super Admin, Support Agent, platform audit, global settings
+3. Tenant Management — tenant provisioning, slug/subdomain, lifecycle, onboarding, settings, branding
+4. Subscription and Entitlements — plans, trials, limits, usage, overrides
+5. Organization — branches, employees, roles, permissions
+6. CRM — customers, activities, tasks, duplicate detection
+7. Suppliers and Rates — suppliers, rate sheets, charge templates, imports
+8. Quotes and RFQ — quotes, versions, RFQ, pricing calculations
+9. Bookings — booking lifecycle and conversion from quotes
+10. Shipments and Tracking — shipments, statuses, timeline, containers, public tracking
+11. Documents — uploads, generated PDFs, visibility, storage access
+12. Finance — invoices, payments, expenses, credit notes, profitability, exchange rates
+13. Notifications — in-app and email delivery, preferences, templates
+14. Reports and Search — dashboards, operational/financial reports, tenant search
+15. Support — RAANKO tickets and company customer support requests
+16. Import Jobs — Excel import pipelines and error reporting
+
+Rules:
+- Modules communicate through application services or domain events, not direct cross-module table access from controllers
+- Shared kernel is limited to common infrastructure such as auth context, pagination, money/value objects, and audit helpers
+- Future modules such as Warehouse, Fleet, Consolidation, and Integrations attach through new modules rather than rewriting core shipment/finance models
+
+Consequences:
+- The repository should use a module-oriented folder structure in backend and feature-oriented structure in frontend.
+- Cross-module transactions must be designed explicitly where quote, booking, shipment, and finance flows connect.
+- Later extraction to services remains possible at module seams.
+
+---
+
+## ADR-011: Tenant lifecycle behavior for trial, read-only, and suspension
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+Discovery confirmed a 60-day trial, read-only mode after trial expiry, and configurable behavior during suspension.
+
+Decision:
+Distinguish company status, subscription status, and write access.
+
+- Trial: full product write access for 60 days
+- Trial expired / unpaid read-only: company users may view tenant data but cannot create or mutate operational/financial records; customer portal is also read-only and cannot submit new RFQs
+- Suspended: company login and API access are blocked; customer portal is read-only; public tracking remains available for existing/active shipments
+- Data is preserved in all non-deletion states
+
+Consequences:
+- Entitlements must expose a write-capability flag separate from login availability.
+- Background jobs and portal endpoints must enforce read-only mode consistently.
+- Super Admin manual activation moves a tenant from read-only to paid active.
+
+---
+
+## ADR-012: Internal identifier format
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+RAANKO exposes public tracking, portal links, and APIs. Identifier guessing must be avoided.
+
+Decision:
+Use ULID for primary public-facing and internal entity identifiers where a string ID is appropriate.
+
+- Tenant immutable internal ID: ULID or UUID accepted, prefer ULID for sortable creation time
+- Public business numbers such as quote, shipment, and invoice numbers remain tenant-configurable sequences separate from primary keys
+
+Consequences:
+- URLs and APIs use non-sequential identifiers.
+- Database indexing and sort-by-created-time are simpler with ULID.
+- Human-readable numbers remain customizable per tenant.
+
+---
+
+## ADR-013: Beta infrastructure providers
+
+Status: Accepted
+
+Date: 2026-09-01
+
+Context:
+The project has a domain but no dedicated server yet. Beta infrastructure budget is approximately USD 0–20 per month.
+
+Decision:
+Use low-cost managed services for Beta:
+
+- Application hosting: managed PaaS
+- PostgreSQL: managed instance from the same PaaS or a small attached database service
+- Redis: managed small instance for queue and cache
+- Object storage: Cloudflare R2 or equivalent S3-compatible storage
+- Email: Resend or equivalent transactional provider
+- DNS/CDN/WAF front door: Cloudflare
+
+Exact vendor choice may vary by availability and price at implementation time, but the capability classes above are fixed for Beta.
+
+Consequences:
+- Infrastructure setup can begin once implementation is approved.
+- Production hardening and cost review are required before broad commercial launch.

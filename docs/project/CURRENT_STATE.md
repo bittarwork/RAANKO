@@ -2,19 +2,19 @@
 
 ## Current Phase
 
-Product: Project governance established. System analysis has not started.
+Product: System analysis complete. Platform foundation design in progress.
 
-Task workflow: TASK-0001 is in Review.
+Task workflow: TASK-0001 is in Review. Discovery analysis Rounds 1–23 are complete and approved by the owner.
 
 ## Current Milestone
 
-TASK-0001 — Establish RAANKO Project Governance and Documentation System
+Platform Foundation Design — ADR Stack, multi-tenancy, and module boundaries
 
 ## Active Modules
 
 None implemented.
 
-Documentation structure exists. Module specification folders will be created when a module enters Analysis.
+Architecture design documents are being filled during the Design phase. Module specification folders will be created when a module enters Implementation.
 
 ## Completed Work
 
@@ -25,34 +25,42 @@ Documentation structure exists. Module specification folders will be created whe
 - Five-phase workflow, phase gates, and task lifecycle
 - High-level roadmap, MVP scope, and future scope
 - Initial requirements, open questions, assumptions, decisions, and changelog
-- Architecture principle documents that do not finalize technology
-- Task and documentation templates
+- Architecture principle documents
+- Discovery analysis Rounds 1–23 completed
+- Accepted ADRs for stack, physical multi-tenancy, module boundaries, lifecycle, identifiers, and Beta infrastructure
+- Updated system architecture, multi-tenancy, and database logical design documents
 
 ## Work In Progress
 
-- Owner review of TASK-0001
+- Platform foundation design gate review
+- Remaining Design outputs: permission matrix, auth design detail, API contract principles, UX flows
 
 ## Blocked Work
 
-- Architecture, database, and technology selection are blocked until related analysis is complete and ADRs are accepted
-- Application implementation is blocked until system analysis and design gates pass
+- Application implementation is blocked until the Design gate is approved
+- Physical database DDL and migrations are blocked until detailed schema design is approved
+- Public commercial pricing configuration is blocked until OQ-005 is answered
 
 ## Next Recommended Task
 
-TASK-0002 — Analyze RAANKO system domain and freeze MVP capability map
+Complete remaining Design outputs, then obtain owner approval for the Design gate before Implementation Planning.
 
-Do not choose architecture, database, or technologies as final during that task unless a specific decision is required and accepted.
+Suggested next design work:
+1. Authentication and authorization design detail
+2. MVP permission matrix
+3. Core workflow sequence diagrams
+4. Implementation planning by vertical slice
 
 ## Open Decisions
 
 See `docs/project/OPEN_QUESTIONS.md`.
 
-Highest impact:
-
-- Technology stack
-- Physical multi-tenant database strategy
-- Commercial plan names and prices
-- Suspended-tenant behavior for customer portal and public tracking
+Highest impact remaining:
+- OQ-005 commercial plan names and prices
+- OQ-008 multi-tenant membership switching in MVP UI
+- OQ-010 legal retention period
+- OQ-012 Beta recruitment approach
+- OQ-013 MENA legal and privacy requirements
 
 ## Known Issues
 

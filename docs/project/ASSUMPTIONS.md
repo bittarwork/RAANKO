@@ -13,13 +13,13 @@ Assumption:
 A modular monolith is the initial application shape, with module boundaries that allow later extraction if needed.
 
 Status:
-Temporary
+Accepted as ADR-010
 
 Must Be Confirmed Before:
 System architecture decision
 
 Classification:
-Recommendation currently recorded as a working assumption
+Decision recorded in ADR-010
 
 ---
 
@@ -29,7 +29,7 @@ Assumption:
 PostgreSQL is a strong candidate for the primary database because of relational data, constraints, and optional row-level security.
 
 Status:
-Temporary
+Accepted as ADR-009
 
 Must Be Confirmed Before:
 Database implementation
@@ -42,13 +42,13 @@ Assumption:
 Shared application database with explicit `tenant_id` on tenant-scoped tables is the default isolation strategy being evaluated, with additional defense in depth.
 
 Status:
-Temporary
+Accepted as ADR-009
 
 Must Be Confirmed Before:
 Database implementation
 
 Notes:
-This is not accepted yet. See OQ-003.
+See ADR-009.
 
 ---
 
@@ -76,6 +76,9 @@ Temporary / Owner preference captured
 Must Be Confirmed Before:
 Company onboarding defaults
 
+Notes:
+Discovery confirmed Arabic default language for MENA tenants and country-based currency suggestion.
+
 ---
 
 ## ASM-006
@@ -88,3 +91,29 @@ Temporary
 
 Must Be Confirmed Before:
 Location data-model design
+
+---
+
+## ASM-007
+
+Assumption:
+Year 1 scale target after Beta is approximately 50 tenants, 100 concurrent users, and 5,000 shipments per month.
+
+Status:
+Temporary
+
+Must Be Confirmed Before:
+Infrastructure sizing review before production launch
+
+---
+
+## ASM-008
+
+Assumption:
+Beta infrastructure spend remains near USD 0–20 per month until revenue or launch needs justify an increase.
+
+Status:
+Temporary
+
+Must Be Confirmed Before:
+Production launch readiness review
