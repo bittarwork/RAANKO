@@ -40,7 +40,10 @@ Thumbs.db
 apps/api/prisma/*.db
 apps/api/prisma/*.db-journal
 
+# Local document storage (dev)
+apps/api/.data/
+
 # Misc
-.turbo/
+apps/api/.data/
 .cache/
 *.pem

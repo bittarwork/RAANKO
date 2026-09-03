@@ -46,6 +46,9 @@ jobs:
       - name: Generate Prisma client
         run: pnpm db:generate
 
+      - name: Build shared package
+        run: pnpm --filter @raanko/shared build
+
       - name: Typecheck
         run: pnpm typecheck
 

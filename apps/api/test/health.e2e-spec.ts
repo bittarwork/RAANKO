@@ -8,6 +8,8 @@ describe('HealthController (e2e)', () => {
   let app: INestApplication;
 
   it('GET /api/v1/health returns ok', async () => {
+    process.env.JWT_ACCESS_SECRET =
+      process.env.JWT_ACCESS_SECRET ?? 'dev-only-change-me-access-secret-min-32';
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();

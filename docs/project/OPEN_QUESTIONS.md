@@ -96,17 +96,18 @@ Impact:
 Billing UI copy and packaging. The entitlement engine itself does not require prices to be designed.
 
 Status:
-Open
+Parked
+
+Notes:
+Beta uses `Trial` and `Paid` plan placeholders without public pricing. Public commercial launch configuration remains blocked until the owner answers names, EUR prices, billing cycles, and limits. Do not invent prices.
+
+Parked Date:
+2026-09-03
 
 Must Be Answered Before:
 Public commercial launch configuration
 
-Notes:
-Do not assume prices. Beta uses `Trial` and `Paid` plan placeholders without public pricing.
-
 ---
-
-## OQ-006
 
 Question:
 During tenant suspension, what exactly happens to Customer Portal and Public Tracking?
@@ -191,7 +192,13 @@ Impact:
 Deletion workflow and compliance.
 
 Status:
-Open
+Parked
+
+Notes:
+MVP/Beta does not implement permanent tenant deletion. Retention period must be answered before any hard-delete workflow. Records stay suspended/archived.
+
+Parked Date:
+2026-09-03
 
 Must Be Answered Before:
 Permanent deletion implementation
@@ -226,10 +233,16 @@ Impact:
 Beta validation and onboarding support model.
 
 Status:
-Open
+Parked
+
+Notes:
+Product Beta is technically ready for 3–5 trial tenants via Super Admin provisioning. Recruitment method is an operational owner decision outside the codebase. Residual risk accepted for Slice 14 staging.
+
+Parked Date:
+2026-09-03
 
 Must Be Answered Before:
-Beta launch planning
+Beta launch planning (operational; not a code blocker)
 
 ---
 
@@ -242,7 +255,13 @@ Impact:
 Compliance claims, retention, and privacy operations.
 
 Status:
-Open
+Parked
+
+Notes:
+No country-specific legal claims are made in the product. Public commercial launch and permanent deletion remain blocked until MENA privacy/retention requirements are confirmed by the owner.
+
+Parked Date:
+2026-09-03
 
 Must Be Answered Before:
 Public commercial launch and permanent deletion implementation

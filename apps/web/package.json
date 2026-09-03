@@ -8,7 +8,8 @@
     "start": "next start --port 3000",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "echo 'test: web — Playwright in Slice 14'"
+    "test": "echo 'Playwright: pnpm --filter @raanko/web test:e2e'",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@raanko/shared": "workspace:*",
@@ -22,6 +23,7 @@
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.1.0",
+    "@playwright/test": "^1.49.0",
     "typescript": "^5.7.0"
   }
 }

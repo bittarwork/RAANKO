@@ -9,10 +9,7 @@
     "experimentalDecorators": true,
     "noEmit": false,
     "declaration": false,
-    "declarationMap": false,
-    "paths": {
-      "@raanko/shared": ["../../packages/shared/src/index.ts"]
-    }
+    "declarationMap": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test"]

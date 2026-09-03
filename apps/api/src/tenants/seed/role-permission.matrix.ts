@@ -1,0 +1,365 @@
+import { ALL_TENANT_PERMISSION_KEYS, FeatureKeys } from '@raanko/shared';
+
+/** Default tenant role keys seeded at provisioning. */
+export const DEFAULT_ROLE_KEYS = [
+  'owner',
+  'admin',
+  'branch_manager',
+  'sales',
+  'shipping_ops',
+  'accountant',
+  'customer_service',
+] as const;
+
+export type DefaultRoleKey = (typeof DEFAULT_ROLE_KEYS)[number];
+
+export const DEFAULT_ROLE_META: Record<
+  DefaultRoleKey,
+  { name: string; isBranchScoped: boolean }
+> = {
+  owner: { name: 'Company Owner', isBranchScoped: false },
+  admin: { name: 'Company Admin', isBranchScoped: false },
+  branch_manager: { name: 'Branch Manager', isBranchScoped: true },
+  sales: { name: 'Sales', isBranchScoped: false },
+  shipping_ops: { name: 'Shipping Operations', isBranchScoped: false },
+  accountant: { name: 'Accountant', isBranchScoped: false },
+  customer_service: { name: 'Customer Service', isBranchScoped: false },
+};
+
+/**
+ * Permission matrix from PERMISSIONS_MODEL.md.
+ * Y = granted; roles not listed for a key are denied.
+ */
+const Y = ['owner', 'admin'] as const;
+
+function roles(
+  ...keys: DefaultRoleKey[]
+): DefaultRoleKey[] {
+  return keys;
+}
+
+/** Map permission key → roles that receive it (branch scope handled via role flag). */
+export const ROLE_PERMISSION_MATRIX: Record<string, DefaultRoleKey[]> = {
+  'organization.branches.view': roles('owner', 'admin', 'branch_manager'),
+  'organization.branches.manage': roles(...Y),
+  'organization.employees.view': roles('owner', 'admin', 'branch_manager'),
+  'organization.employees.manage': roles(...Y),
+  'organization.roles.view': roles(...Y),
+  'organization.roles.manage': roles(...Y),
+  'crm.customers.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'crm.customers.create': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'customer_service',
+  ),
+  'crm.customers.update': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'customer_service',
+  ),
+  'crm.customers.delete': roles(...Y),
+  'crm.customers.export': roles('owner', 'admin', 'branch_manager', 'sales'),
+  'crm.activities.manage': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'customer_service',
+  ),
+  'suppliers.suppliers.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+  ),
+  'suppliers.suppliers.manage': roles('owner', 'admin', 'shipping_ops'),
+  'suppliers.rates.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+  ),
+  'suppliers.rates.manage': roles('owner', 'admin', 'shipping_ops'),
+  'suppliers.rates.import': roles('owner', 'admin', 'shipping_ops'),
+  'quotes.rfq.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'customer_service',
+  ),
+  'quotes.rfq.manage': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'customer_service',
+  ),
+  'quotes.quotes.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'quotes.quotes.create': roles('owner', 'admin', 'branch_manager', 'sales'),
+  'quotes.quotes.update': roles('owner', 'admin', 'branch_manager', 'sales'),
+  'quotes.quotes.approve': roles('owner', 'admin', 'branch_manager', 'sales'),
+  'quotes.quotes.delete': roles(...Y),
+  'quotes.quotes.export': roles('owner', 'admin', 'branch_manager', 'sales'),
+  'bookings.bookings.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'bookings.bookings.create': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+  ),
+  'bookings.bookings.update': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'shipping_ops',
+  ),
+  'bookings.bookings.delete': roles('owner', 'admin', 'shipping_ops'),
+  'shipments.shipments.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'shipments.shipments.create': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'shipping_ops',
+  ),
+  'shipments.shipments.update': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'shipping_ops',
+  ),
+  'shipments.shipments.delete': roles('owner', 'admin', 'shipping_ops'),
+  'shipments.status.manage': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'shipping_ops',
+    'customer_service',
+  ),
+  'shipments.tracking.manage': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'shipping_ops',
+    'customer_service',
+  ),
+  'documents.documents.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'documents.documents.upload': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'customer_service',
+  ),
+  'documents.documents.download': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'documents.documents.delete': roles('owner', 'admin', 'shipping_ops'),
+  'documents.generated.create': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+  ),
+  'finance.invoices.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'accountant',
+  ),
+  'finance.invoices.create': roles('owner', 'admin', 'accountant'),
+  'finance.invoices.update': roles('owner', 'admin', 'accountant'),
+  'finance.invoices.delete': roles('owner', 'admin', 'accountant'),
+  'finance.supplier_invoices.view': roles('owner', 'admin', 'accountant'),
+  'finance.supplier_invoices.manage': roles('owner', 'admin', 'accountant'),
+  'finance.payments.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'accountant',
+  ),
+  'finance.payments.manage': roles('owner', 'admin', 'accountant'),
+  'finance.expenses.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'accountant',
+  ),
+  'finance.expenses.manage': roles('owner', 'admin', 'accountant'),
+  'finance.credit_notes.manage': roles('owner', 'admin', 'accountant'),
+  'finance.exchange_rates.manage': roles('owner', 'admin', 'accountant'),
+  'finance.buy_prices.view': roles(
+    'owner',
+    'admin',
+    'sales',
+    'shipping_ops',
+    'accountant',
+  ),
+  'finance.margins.view': roles('owner', 'admin', 'sales', 'accountant'),
+  'finance.profitability.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'accountant',
+  ),
+  'finance.reports.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'accountant',
+  ),
+  'finance.reports.export': roles('owner', 'admin', 'accountant'),
+  'reports.dashboard.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'reports.operational.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'reports.operational.export': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'accountant',
+  ),
+  'search.tenant.use': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'sales',
+    'shipping_ops',
+    'accountant',
+    'customer_service',
+  ),
+  'settings.company.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'accountant',
+  ),
+  'settings.company.manage': roles(...Y),
+  'settings.notifications.manage': roles(...Y),
+  'support.company_requests.view': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'customer_service',
+  ),
+  'support.company_requests.manage': roles(
+    'owner',
+    'admin',
+    'branch_manager',
+    'customer_service',
+  ),
+  'support.raanko_tickets.view': roles(...Y),
+  'support.raanko_tickets.create': roles(...Y),
+  'imports.jobs.view': roles('owner', 'admin', 'branch_manager', 'shipping_ops'),
+  'imports.jobs.run': roles('owner', 'admin', 'shipping_ops'),
+};
+
+/** MVP plan catalog — Trial/Paid seeds enable only these keys. */
+export const FEATURE_CATALOG: { key: string; name: string }[] = [
+  { key: FeatureKeys.CRM, name: 'CRM' },
+  { key: FeatureKeys.SUPPLIERS, name: 'Suppliers and Rates' },
+  { key: FeatureKeys.QUOTES, name: 'Quotes and RFQ' },
+  { key: FeatureKeys.BOOKINGS, name: 'Bookings' },
+  { key: FeatureKeys.SHIPMENTS, name: 'Shipments' },
+  { key: FeatureKeys.DOCUMENTS, name: 'Documents' },
+  { key: FeatureKeys.FINANCE, name: 'Finance' },
+  { key: FeatureKeys.REPORTS, name: 'Reports' },
+  { key: FeatureKeys.PORTAL, name: 'Customer Portal' },
+  { key: FeatureKeys.IMPORTS, name: 'Import Jobs' },
+];
+
+/** Future modules are catalogued but must not be entitled on Trial/Paid. */
+export const FUTURE_FEATURE_CATALOG: { key: string; name: string }[] = [
+  { key: FeatureKeys.WAREHOUSE, name: 'Warehouse' },
+  { key: FeatureKeys.INVENTORY, name: 'Inventory' },
+  { key: FeatureKeys.FLEET, name: 'Fleet' },
+  { key: FeatureKeys.GPS_TRACKING, name: 'GPS Tracking' },
+  { key: FeatureKeys.DRIVER_APP, name: 'Driver App' },
+  { key: FeatureKeys.CUSTOMER_APP, name: 'Customer App' },
+  { key: FeatureKeys.OPS_APP, name: 'Ops App' },
+  { key: FeatureKeys.CARRIER_API, name: 'Carrier API' },
+  { key: FeatureKeys.AIRLINE_API, name: 'Airline API' },
+  { key: FeatureKeys.WHATSAPP, name: 'WhatsApp' },
+  { key: FeatureKeys.SMS, name: 'SMS' },
+  { key: FeatureKeys.QUICKBOOKS, name: 'QuickBooks' },
+  { key: FeatureKeys.XERO, name: 'Xero' },
+  { key: FeatureKeys.PAYMENTS, name: 'Payments' },
+  { key: FeatureKeys.ESIGN, name: 'E-Sign' },
+  { key: FeatureKeys.AI_DOCUMENTS, name: 'AI Documents' },
+];
+
+export { ALL_TENANT_PERMISSION_KEYS };

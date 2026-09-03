@@ -4,6 +4,17 @@ This file records what actually changed, not future plans.
 
 ---
 
+## 2026-09-03
+
+### Changed
+
+- Approved TASK-0002 Implementation Planning and started MVP slice delivery.
+- Implemented MVP slices 1–14 including auth, tenants, organization, CRM, suppliers, quotes, shipments, documents, finance, reports, notifications, support, portal, and Beta hardening.
+- Parked OQ-005, OQ-010, OQ-012, and OQ-013 for Beta; public commercial launch still requires owner answers (prices not invented).
+- Added Phase 2 APIs and Future entitlement-gated endpoints. Trial/Paid seeds do not enable Future features.
+
+---
+
 ## 2026-09-01
 
 ### Added

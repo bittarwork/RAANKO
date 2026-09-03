@@ -2,66 +2,57 @@
 
 ## Current Phase
 
-Product: Platform foundation design complete. Ready for Design gate approval and Implementation Planning.
+Product: MVP slices 1–14 implemented; Phase 2 product APIs present; Future modules entitlement-gated (not enabled on Trial/Paid).
 
-Task workflow: TASK-0001 is in Review. Discovery analysis Rounds 1–23 are complete and approved by the owner.
+Task workflow: TASK-0002 Approved. Implementation executed from the master plan (2026-09-03).
 
 ## Current Milestone
 
-Platform Foundation Design — complete pending formal Design gate sign-off
+Beta hardening (Slice 14) complete in codebase. Staging deploy via Dockerfiles. Public commercial launch still blocked on parked OQs.
 
 ## Active Modules
 
-None implemented.
-
-Architecture design documents are complete for the foundation gate. Module specification folders will be created when a module enters Implementation.
+Implemented in `apps/api` and `apps/web`:
+- Platform Identity, Tenant Management, Organization
+- CRM, Suppliers, Quotes/RFQ, Bookings, Shipments, Public Tracking
+- Documents, Finance, Reports/Search, Notifications, Support, Portal
+- Phase 2: custom domain, email sender, webhooks, usage, impersonation, consolidation, CSV, document versions, membership switch API
+- Future: `/api/v1/future/*` returns FEATURE_NOT_ENTITLED unless entitled
 
 ## Completed Work
 
-- Project folder structure for governance, process, roadmap, and tasks
-- `AGENTS.md`
-- `PROJECT_CONTEXT.md`
-- Work rules, definition of done, coding standards, and security rules
-- Five-phase workflow, phase gates, and task lifecycle
-- High-level roadmap, MVP scope, and future scope
-- Initial requirements, open questions, assumptions, decisions, and changelog
-- Architecture principle documents
-- Discovery analysis Rounds 1–23 completed
-- Accepted ADRs for stack, physical multi-tenancy, module boundaries, lifecycle, identifiers, Beta infrastructure, and MVP auth/permission policy (ADR-014)
-- Updated system architecture, multi-tenancy, and database logical design documents
-- Authentication and authorization design (`AUTHENTICATION_DESIGN.md`)
-- MVP permission catalog and default role matrix (`PERMISSIONS_MODEL.md`)
-- API contract principles (`API_CONTRACT_PRINCIPLES.md`)
-- Core workflow sequence diagrams (`CORE_WORKFLOWS.md`)
-- UX flows for all primary surfaces (`UX_FLOWS.md`)
+- TASK-0002 Implementation Planning Approved
+- MVP vertical slices 1–14
+- Rate limiting on auth and public tracking
+- Super Admin 2FA enforcement flag for production (`ENFORCE_PLATFORM_2FA`)
+- Isolation, permission, finance, portal, and quote→invoice flow tests
+- Phase 2 APIs and Future feature gates
 
 ## Work In Progress
 
-- TASK-0002 Implementation Planning (Design phase — vertical slices defined)
-- Slice 1 scaffold ready to enter Implementation upon gate approval
+- Owner answers still required for public commercial packaging (OQ-005) and MENA legal (OQ-013)
+- Playwright E2E against a live web server (script `test:e2e`; CI uses API vitest)
 
 ## Blocked Work
 
-- Application implementation is blocked until the Design gate is approved
-- Physical database DDL and migrations are blocked until detailed schema design is approved
-- Public commercial pricing configuration is blocked until OQ-005 is answered
+- Public commercial pricing configuration until OQ-005 is answered (not invented)
+- Permanent tenant deletion until OQ-010 is answered
+- Country-specific legal claims until OQ-013 is answered
 
 ## Next Recommended Task
 
-1. Approve TASK-0002 vertical slice plan
-2. Begin Slice 1 Implementation: repository scaffold and dev environment
-3. Physical schema design per slice starting with Platform Identity (Slice 2)
+1. `docker compose up -d` then Prisma migrate + seed Super Admin
+2. Staging deploy of API/web Docker images
+3. Owner answers OQ-005 / OQ-010 / OQ-013 before commercial launch
+4. Recruit Beta tenants (OQ-012 operational)
 
 ## Active Tasks
 
-- `tasks/active/TASK-0001-project-foundation.md` — Review
-- `tasks/active/TASK-0002-implementation-planning.md` — Design
+- `tasks/active/TASK-0002-implementation-planning.md` — Approved; slices implemented
 
 ## Open Decisions
 
-See `docs/project/OPEN_QUESTIONS.md`.
-
-Highest impact remaining:
+Parked for Beta (see `docs/project/OPEN_QUESTIONS.md`):
 - OQ-005 commercial plan names and prices
 - OQ-010 legal retention period
 - OQ-012 Beta recruitment approach
@@ -69,8 +60,11 @@ Highest impact remaining:
 
 ## Known Issues
 
-None in software. The application codebase does not exist yet.
+- Email uses console fallback unless Resend is configured
+- Object storage uses local disk in development
+- Playwright browser E2E is opt-in (`test:e2e`), not the default CI job
+- UI is functional MVP density, not a finished design system
 
 ## Last Updated
 
-2026-09-01
+2026-09-03
